@@ -1,3 +1,5 @@
+#!/usr/bin/env python3
+
 import argparse
 import sys
 from fasp import fasta
@@ -22,7 +24,8 @@ def parse_args():
 
 functions = {
     "slice_records_by_exact_ids": fasta.slice_records_by_exact_ids, 
-    "slice_records_by_partial_ids": fasta.slice_records_by_partial_ids
+    "slice_records_by_partial_ids": fasta.slice_records_by_partial_ids, 
+    "rename_headers_feature": fastn.rename_headers_feature
 }
 
 if __name__ == "__main__":
