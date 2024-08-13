@@ -20,7 +20,10 @@ def parse_args():
     args = parser.parse_args()
     return args
 
-functions = {}
+functions = {
+    "slice_records_by_exact_ids": fasta.slice_records_by_exact_ids, 
+    "slice_records_by_partial_ids": fasta.slice_records_by_partial_ids
+}
 
 if __name__ == "__main__":
     main()
