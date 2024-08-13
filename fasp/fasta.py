@@ -14,26 +14,26 @@ slice_records_by_partial_ids:
 import re
 from Bio import SeqIO
 
-def prefix_to_headers(input_filename, output_filename, prefix):
+def prefix_to_sequence_ids(input_filename, output_filename, prefix):
     """
     Prefix to sequence ids.
 
     Parameters
     ----------
     input_filename : str
-        Filename of input multi-FASTA file. 
+        Input filename.
     output_filename : str
-        Filename of output multi-FASTA file.
+        Output filename.
     prefix : str
         String to prefix.
 
     """
-    with open(input_filename, 'r') as input_handle, open(output_filename, 'w') as output_handle:
-        for record in SeqIO.parse(input_handle, 'fasta'):
-            record.id = f'{prefix}_{record.id}'
+    with open(input_filename, "r") as input_handle, open(output_filename, "w") as output_handle:
+        for record in SeqIO.parse(input_handle, "fasta"):
+            record.id = f"{prefix}_{record.id}"
             record.name = ""
             record.description = ""
-            SeqIO.write(record, output_handle, 'fasta')
+            SeqIO.write(record, output_handle, "fasta")
 
 def slice_records_by_exact_ids(input_filename: str, output_filename: str, *input_ids: str) -> None:
     """Slice records by exact match of sequence ids.
