@@ -23,7 +23,8 @@ def parse_args():
     return args
 
 functions = {
-    "prefix_to_sequence_ids": fasta.prefix_to_sequence_ids,
+    "rename_header": fasta.rename_header, 
+    "prefix_to_sequence_ids": fasta.prefix_to_sequence_ids, 
     "slice_records_by_exact_ids": fasta.slice_records_by_exact_ids, 
     "slice_records_by_partial_ids": fasta.slice_records_by_partial_ids, 
     "rename_headers_feature": fastn.rename_headers_feature
