@@ -2,11 +2,11 @@
 
 """Library for processing nucleotide FASTA files.
 
-Functions:
+Functions
 ---------
 rename_headers_feature: 
     Rename headers feature values.
-    
+
 """
 
 import re
@@ -31,18 +31,18 @@ def rename_headers_feature(input_filename: str, output_filename: str, feature: s
     def extract_feature_value(text: str, default: str = "") -> str:
         """Extract feature value from text if it matches the pattern.
 
-        Args:
+        Args
         ----
         text : str
             Text to extract feature value.
         default : str
             Default value which is returned if the feature is not found. 
         
-        Returns:
+        Returns
         -------
         match.group(1) : str
             Feature value if the feature is found.
-            If the feature is not found, instead of this, default is returned.
+            If this is not found, default is returned instead.
 
         """
         match = pattern.search(text)
