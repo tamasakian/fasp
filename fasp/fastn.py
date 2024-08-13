@@ -4,8 +4,7 @@
 
 Functions
 ---------
-rename_headers_feature: 
-    Rename headers feature values.
+rename_headers_feature: Rename headers feature values.
 
 """
 

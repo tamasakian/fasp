@@ -4,10 +4,9 @@
 
 Functions
 ---------
-slice_records_by_exact_ids: 
-    Slice records by exact match of sequence ids.
-slice_records_by_partial_ids: 
-    Slice records by partial match of sequence ids.
+prefix_to_sequence_ids: Prefix to sequence ids.
+slice_records_by_exact_ids: Slice records by exact match of sequence ids.
+slice_records_by_partial_ids: Slice records by partial match of sequence ids.
 
 """
 
