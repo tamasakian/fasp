@@ -1,0 +1,11 @@
+## ignore all
+*
+
+## do not ignore files
+!/pyproject.toml
+!/README.md
+!/.gitignore
+
+## do not ignore files in dirs
+!/fasp/
+!/fasp/*.py
