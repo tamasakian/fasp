@@ -2,7 +2,7 @@
 
 """Library for processing FASTA files.
 
-Functions:
+Functions
 ---------
 slice_records_by_exact_ids: 
     Slice records by exact match of sequence ids.
@@ -18,7 +18,7 @@ def prefix_to_headers(input_filename, output_filename, prefix):
     """
     Prefix to sequence ids.
 
-    Parameters:
+    Parameters
     ----------
     input_filename : str
         Filename of input multi-FASTA file. 
@@ -26,6 +26,7 @@ def prefix_to_headers(input_filename, output_filename, prefix):
         Filename of output multi-FASTA file.
     prefix : str
         String to prefix.
+
     """
     with open(input_filename, 'r') as input_handle, open(output_filename, 'w') as output_handle:
         for record in SeqIO.parse(input_handle, 'fasta'):
@@ -37,7 +38,7 @@ def prefix_to_headers(input_filename, output_filename, prefix):
 def slice_records_by_exact_ids(input_filename: str, output_filename: str, *input_ids: str) -> None:
     """Slice records by exact match of sequence ids.
 
-    Args:
+    Args
     ----
     input_filename : str
         Input filename.
@@ -59,7 +60,7 @@ def slice_records_by_exact_ids(input_filename: str, output_filename: str, *input
 def slice_records_by_partial_ids(input_filename: str, output_filename: str, *input_ids: str) -> None:
     """Slice records by partial match of sequence ids.
 
-    Args:
+    Args
     ----
     input_filename : str
         Input filename.
