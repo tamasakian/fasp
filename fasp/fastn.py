@@ -5,6 +5,7 @@
 Functions
 ---------
 rename_headers_feature: Rename headers feature values.
+slice_records_by_seqids: Slice records by match of seqids.
 
 """
 
@@ -55,4 +56,30 @@ def rename_headers_feature(input_filename: str, output_filename: str, feature: s
             record.id = feature_value
             record.name = ""
             record.description = ""  
+            SeqIO.write(record, output_handle, "fasta")
+
+
+def slice_records_by_seqids(input_filename: str, output_filename: str, *input_seqids: str) -> None:
+    """Slice records by match of seqids.
+
+    Args
+    ----
+    input_filename : str
+        Input filename.
+    output_filename : str
+        Output filename.
+    input_seqids : tuple
+        Seqids to slice records.
+
+    Example
+    -------
+    If record.id is 'lcl|ABC123_cds_...':
+    The function extracts 'ABC123' and checks if it is in input_seqids.
+
+    """
+    with open(input_filename, "r") as input_handle, open(output_filename, "w") as output_handle:
+        for record in SeqIO.parse(input_handle, "fasta"):
+            seqid = record.id.split("lcl|")[1].split("_cds_")[0]
+            if seqid not in input_seqids:
+                continue
             SeqIO.write(record, output_handle, "fasta")

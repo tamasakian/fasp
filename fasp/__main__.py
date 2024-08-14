@@ -17,8 +17,8 @@ def main():
 
 def parse_args():
     parser = argparse.ArgumentParser()
-    parser.add_argument('function', choices=functions)
-    parser.add_argument('args', type=str, nargs='*')
+    parser.add_argument("function", choices=functions)
+    parser.add_argument("args", type=str, nargs="*")
     args = parser.parse_args()
     return args
 
@@ -27,7 +27,8 @@ functions = {
     "prefix_to_sequence_ids": fasta.prefix_to_sequence_ids, 
     "slice_records_by_exact_ids": fasta.slice_records_by_exact_ids, 
     "slice_records_by_partial_ids": fasta.slice_records_by_partial_ids, 
-    "rename_headers_feature": fastn.rename_headers_feature
+    "rename_headers_feature": fastn.rename_headers_feature, 
+    "slice_records_by_seqids": fastn.slice_records_by_seqids
 }
 
 if __name__ == "__main__":
