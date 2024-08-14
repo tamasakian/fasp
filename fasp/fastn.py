@@ -136,6 +136,11 @@ def slice_sequence_by_flanking_region(
         int(value) : int
             Integer value.
 
+        Raises
+        ------
+        ValueError
+            If value is not valid integers.
+
         """
         if not value.isdigit():
             raise ValueError(f"Invalid integer value: {value}")
@@ -217,6 +222,11 @@ def slice_sequence_by_upstream_region(
         -------
         int(value) : int
             Integer value.
+
+        Raises
+        ------
+        ValueError
+            If value is not valid integers.
 
         """
         if not value.isdigit():
