@@ -30,7 +30,9 @@ functions = {
     "slice_records_by_exact_ids": fasta.slice_records_by_exact_ids, 
     "slice_records_by_partial_ids": fasta.slice_records_by_partial_ids, 
     "rename_headers_feature": fastn.rename_headers_feature, 
-    "slice_records_by_seqids": fastn.slice_records_by_seqids
+    "slice_records_by_seqids": fastn.slice_records_by_seqids, 
+    "slice_sequence_by_flanking_region": fastn.slice_sequence_by_flanking_region,
+    "slice_sequence_by_upstream_region": fastn.slice_sequence_by_upstream_region
 }
 
 if __name__ == "__main__":
