@@ -6,6 +6,8 @@ Functions
 ---------
 rename_header: Rename a header.
 prefix_to_sequence_ids: Prefix to sequence ids.
+split_multi_to_single: Split a multi FASTA file into individual single sequence FASTA files.
+merge_msa_by_ids: Merge MSAs by sequence ids.
 slice_records_by_exact_ids: Slice records by exact match of sequence ids.
 slice_records_by_partial_ids: Slice records by partial match of sequence ids.
 
@@ -13,6 +15,8 @@ slice_records_by_partial_ids: Slice records by partial match of sequence ids.
 
 import re
 from Bio import SeqIO
+from Bio.Seq import Seq
+from Bio.SeqRecord import SeqRecord
 
 def rename_header(input_filename: str, output_filename: str, output_id: str, output_name: str, output_description: str) -> None:
     """Rename a header.
@@ -62,6 +66,61 @@ def prefix_to_sequence_ids(input_filename: str, output_filename: str, prefix: st
             SeqIO.write(record, output_handle, "fasta")
 
 
+def split_multi_to_single(input_filename: str, output_dirname: str) -> None:
+    """Split a multi FASTA file into individual single sequence FASTA files.
+
+    This function reads a multi-FASTA file and creates a separate FASTA file 
+    for each sequence in the input file. 
+    
+    The output files are named based on the sequence IDs and 
+    saved in the specified output directory.
+
+    Args
+    ----
+    input_filename : str
+        Input filename.
+    output_dirname : str
+        Output directory where the individual FASTA files will be saved.
+
+    """
+    with open(input_filename, "r") as input_handle:
+        for record in SeqIO.parse(input_handle, "fasta"):
+            output_filename = f"{output_dirname}/{record.id}.fasta"
+            SeqIO.write(record, output_filename, "fasta")
+
+
+def merge_msa_by_ids(input_filename: str, output_filename: str) -> None:
+    """Merge MSAs by sequence ids.
+
+    This function reads a multi-FASTA file and concatenates sequences 
+    with the same sequence id. 
+    
+    The merged sequences are then saved to a new FASTA file.
+
+    Args
+    ----
+    input_filename : str
+        Input filename.
+    output_filename : str
+       Output filename where the merged sequences will be saved.
+
+    """
+    msa = {}
+
+    with open(input_filename, "r") as input_handle:
+        for record in SeqIO.parse(input_handle, "fasta"):
+            if record.id not in msa:
+                msa[record.id] = ""
+            msa[record.id] += str(record.seq)
+
+    with open(output_filename, "w") as output_handle:
+        records = []
+        for index, sequence in msa.items():
+            record = SeqRecord(Seq(sequence), id=index, description="")
+            records.append(record)
+        SeqIO.write(records, output_handle, "fasta")
+
+
 def slice_records_by_exact_ids(input_filename: str, output_filename: str, *input_ids: str) -> None:
     """Slice records by exact match of sequence ids.
 
@@ -104,3 +163,5 @@ def slice_records_by_partial_ids(input_filename: str, output_filename: str, *inp
             if not re.search(pattern, record.id):
                 continue
             SeqIO.write(record, output_handle, "fasta")
+
+

@@ -25,6 +25,8 @@ def parse_args():
 functions = {
     "rename_header": fasta.rename_header, 
     "prefix_to_sequence_ids": fasta.prefix_to_sequence_ids, 
+    "split_multi_to_single": fasta.split_multi_to_single, 
+    "merge_msa_by_ids": fasta.merge_msa_by_ids, 
     "slice_records_by_exact_ids": fasta.slice_records_by_exact_ids, 
     "slice_records_by_partial_ids": fasta.slice_records_by_partial_ids, 
     "rename_headers_feature": fastn.rename_headers_feature, 
