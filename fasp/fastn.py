@@ -18,7 +18,7 @@ from Bio.SeqRecord import SeqRecord
 def rename_headers_feature(input_filename: str, output_filename: str, feature: str) -> None:
     """Rename headers feature values.
 
-    Args:
+    Args
     ----
     input_filename : str
         Input filename.
