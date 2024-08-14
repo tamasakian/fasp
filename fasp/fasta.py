@@ -45,8 +45,7 @@ def rename_header(input_filename: str, output_filename: str, output_id: str, out
 
 
 def prefix_to_sequence_ids(input_filename: str, output_filename: str, prefix: str) -> None:
-    """
-    Prefix to sequence ids.
+    """Prefix to sequence ids.
 
     Args
     ----
