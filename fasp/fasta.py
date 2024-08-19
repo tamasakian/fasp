@@ -18,7 +18,7 @@ from Bio import SeqIO
 from Bio.Seq import Seq
 from Bio.SeqRecord import SeqRecord
 
-def rename_header(input_filename: str, output_filename: str, output_id: str, output_name: str, output_description: str) -> None:
+def rename_header(input_filename: str, output_filename: str, output_id: str, output_description: str) -> None:
     """Rename a header.
 
     Args
@@ -29,8 +29,6 @@ def rename_header(input_filename: str, output_filename: str, output_id: str, out
         Output filename.
     output_id : str
         Sequence id.
-    output_name : str
-        Sequence name.
     output_description : str
         Sequence description.
     
@@ -38,7 +36,6 @@ def rename_header(input_filename: str, output_filename: str, output_id: str, out
     with open(input_filename, mode="r") as input_handle:
         record = SeqIO.read(input_handle, "fasta")
         record.id = output_id
-        record.name = output_name
         record.description = output_description
     with open(output_filename, mode="w") as output_handle:
         SeqIO.write(record, output_handle, "fasta")
