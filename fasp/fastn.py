@@ -8,6 +8,7 @@ rename_headers_feature: Rename headers feature values.
 slice_records_by_seqids: Slice records by match of seqids.
 slice_sequence_by_flanking_region: Slice a sequence with the flanking region and display start and stop codons.
 slice_sequence_by_upstream_region: Slice a sequence with the upstream region and display start codon.
+slice_sequence_by_downstream_region: Slice a sequence with the downstream region and display stop codon.
 
 """
 
@@ -140,7 +141,7 @@ def slice_sequence_by_flanking_region(
         length = len(flanking)
         print(f"Start codon: {start_codon}, Stop codon: {stop_codon}, Length: {length}")
     else:
-        raise ValueError("Strand must be either '+' or '-'.")
+        raise ValueError("Strand must be either + or -.")
 
     with open(output_filename, mode="w") as output_handle:
         output_record = SeqRecord(seq=flanking, id=output_id, description=output_description)
