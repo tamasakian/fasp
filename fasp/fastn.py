@@ -179,7 +179,6 @@ def slice_sequence_by_upstream_region(
         input_filename: str,
         output_filename: str,
         output_id: str,
-        output_name: str,
         output_description: str,
         strand: str,
         start: int,
@@ -195,8 +194,6 @@ def slice_sequence_by_upstream_region(
         Output filename.
     output_id : str
         Sequence id.
-    output_name : str
-        Sequence name.
     output_description : str
         Sequence description.
     strand : str
@@ -210,53 +207,83 @@ def slice_sequence_by_upstream_region(
         Number of base pairs to include as the upstream region.
 
     """
-    def to_int(value: str) -> int:
-        """Convert string to integer.
-        
-        Args
-        ----
-        value : str
-            Value to convert to integer.
-
-        Returns
-        -------
-        int(value) : int
-            Integer value.
-
-        Raises
-        ------
-        ValueError
-            If value is not valid integers.
-
-        """
-        if not value.isdigit():
-            raise ValueError(f"Invalid integer value: {value}")
-        return int(value)
-
-    start = to_int(start)
-    end = to_int(end)
-    bp = to_int(bp)
+    start_position = int(start) - 1
+    end_position = int(end) - 1
+    bp = int(bp)
 
     with open(input_filename, mode="r") as input_handle:
         record = SeqIO.read(input_handle, "fasta")
     
     if strand == "+":
-        sequence = record.seq[start-1-bp:start+2]
+        start_codon = record.seq[start_position:start_position+3]
+        upstream = record.seq[start_position-bp:start_position]
+        length = len(upstream)
+        print(f"Start codon: {start_codon}, Length: {length}")
     elif strand == "-":
-        sequence = record.seq[end-3:end+bp].reverse_complement()
+        start_codon = record.seq[end_position-2:end_position+1]
+        upstream = record.seq[end_position+1:end_position+1+bp].reverse_complement()
+        length = len(upstream)
+        print(f"Start codon: {start_codon}, Length: {length}")
     else:
-        raise ValueError("Strand must be either '+' or '-'.")
-
-    start_codon = sequence[bp:bp+3]
-    length = len(sequence)
-    print(f"Start codon: {start_codon}, Length: {length}")
+        raise ValueError("Strand must be either + or -.")
 
     with open(output_filename, mode="w") as output_handle:
-        output_record = SeqRecord(
-            seq=sequence,
-            id=output_id,
-            name=output_name,
-            description=output_description
-        )
+        output_record = SeqRecord(seq=upstream, id=output_id, description=output_description)
         SeqIO.write(output_record, output_handle, "fasta")
 
+
+def slice_sequence_by_downstream_region(
+        input_filename: str,
+        output_filename: str,
+        output_id: str,
+        output_description: str,
+        strand: str,
+        start: int,
+        end: int,
+        bp: int) -> None:
+    """Slice a sequence with the downstream region and display stop codon.
+
+    Args
+    ----
+    input_filename : str
+        Input filename.
+    output_filename : str
+        Output filename.
+    output_id : str
+        Sequence id.
+    output_description : str
+        Sequence description.
+    strand : str
+        Sequence strand.
+        '+' for forward, '-' for reverse.
+    start : int
+        Start position of the sequence to slice.
+    end : int
+        End position of the sequence to slice.
+    bp : int
+        Number of base pairs to include as the downstream region.
+
+    """
+    start_position = int(start) - 1
+    end_position = int(end) - 1
+    bp = int(bp)
+
+    with open(input_filename, mode="r") as input_handle:
+        record = SeqIO.read(input_handle, "fasta")
+
+    if strand == "+":
+        stop_codon = record.seq[end_position-2:end_position+1]
+        downstream = record.seq[end_position+1:end_position+1+bp]
+        length = len(downstream)
+        print(f"Stop codon: {stop_codon}, Length: {length}")
+    elif strand == "-":
+        stop_codon = record.seq[start_position:start_position+3]
+        downstream = record.seq[start_position-bp:start_position].reverse_complement()
+        length = len(downstream)
+        print(f"Stop codon: {stop_codon}, Length: {length}")
+    else:
+        raise ValueError("Strand must be either + or -.")
+
+    with open(output_filename, mode="w") as output_handle:
+        output_record = SeqRecord(seq=downstream, id=output_id, description=output_description)
+        SeqIO.write(output_record, output_handle, "fasta")

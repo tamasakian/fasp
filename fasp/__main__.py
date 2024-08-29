@@ -32,7 +32,8 @@ functions = {
     "rename_headers_feature": fastn.rename_headers_feature, 
     "slice_records_by_seqids": fastn.slice_records_by_seqids, 
     "slice_sequence_by_flanking_region": fastn.slice_sequence_by_flanking_region,
-    "slice_sequence_by_upstream_region": fastn.slice_sequence_by_upstream_region
+    "slice_sequence_by_upstream_region": fastn.slice_sequence_by_upstream_region,
+    "slice_sequence_by_downstream_region": fastn.slice_sequence_by_downstream_region
 }
 
 if __name__ == "__main__":
