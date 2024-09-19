@@ -174,6 +174,7 @@ def measure_lengths(input_filename: str, output_filename: str) -> None:
 
     """
     with open(input_filename, "r") as input_handle, open(output_filename, "w") as output_handle:
+        output_handle.write("name\tlength\n")
         for record in SeqIO.parse(input_handle, "fasta"):
             name = record.id
             length = len(record.seq)
