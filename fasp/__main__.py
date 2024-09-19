@@ -33,7 +33,8 @@ functions = {
     "slice_records_by_seqids": fastn.slice_records_by_seqids, 
     "slice_sequence_by_flanking_region": fastn.slice_sequence_by_flanking_region,
     "slice_sequence_by_upstream_region": fastn.slice_sequence_by_upstream_region,
-    "slice_sequence_by_downstream_region": fastn.slice_sequence_by_downstream_region
+    "slice_sequence_by_downstream_region": fastn.slice_sequence_by_downstream_region,
+    "generate_introns": fastn.generate_introns
 }
 
 if __name__ == "__main__":

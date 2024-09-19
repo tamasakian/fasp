@@ -260,3 +260,44 @@ def slice_sequence_by_downstream_region(
     with open(output_filename, mode="w") as output_handle:
         output_record = SeqRecord(seq=downstream, id=output_id, description=output_description)
         SeqIO.write(output_record, output_handle, "fasta")
+
+def generate_introns(input_filename: str, output_filename: str, gff_filename: str) -> None:
+    """Generate introns.
+
+    Args
+    ----
+    input_filename : str
+        Input filename.
+    output_filename : str
+        Output filename.
+    gff_filename : str
+        Generated intron GFF filename.
+
+    """
+    introns = []
+    with open(gff_filename, "r") as gff_handle:
+        for line in gff_handle:
+            if line.startswith("#"):
+                continue
+            li = line.strip().split("\t")
+            if len(li) != 9:
+                continue
+            seqid, src, kind, start, end, score, strand, phase, attributes = li
+            if kind == "intron":
+                attr_dict = {}
+                for attr in attributes.split(";"):
+                    key, value = attr.split("=")
+                    attr_dict[key] = value
+                intron_id = attr_dict.get("intron_id")
+                introns.append((seqid, int(start), int(end), strand, intron_id))
+    
+    genome = SeqIO.to_dict(SeqIO.parse(input_filename, "fasta"))
+
+    with open(output_filename, "w") as output_handle:
+        for intron in introns:
+            seqid, start, end, strand, intron_id = intron
+            if seqid in genome:
+                intron_seq = genome[seqid].seq[start-1:end]
+                if strand == "-":
+                    intron_seq = intron_seq.reverse_complement()
+                output_handle.write(f">{intron_id}\n{intron_seq}\n")
