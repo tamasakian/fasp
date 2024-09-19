@@ -10,7 +10,7 @@ split_multi_to_single: Split a multi FASTA file into individual single sequence 
 merge_msa_by_ids: Merge MSAs by sequence ids.
 slice_records_by_exact_ids: Slice records by exact match of sequence ids.
 slice_records_by_partial_ids: Slice records by partial match of sequence ids.
-summarize_lengths: Summarize sequence lengths.
+measure_lengths: Measure sequence lengths.
 
 """
 
@@ -162,8 +162,8 @@ def slice_records_by_partial_ids(input_filename: str, output_filename: str, *inp
             SeqIO.write(record, output_handle, "fasta")
 
 
-def summarize_lengths(input_filename: str, output_filename: str) -> None:
-    """Summarize sequence lengths.
+def measure_lengths(input_filename: str, output_filename: str) -> None:
+    """Measure sequence lengths.
 
     Args
     ----
