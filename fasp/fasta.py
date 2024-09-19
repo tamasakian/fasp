@@ -161,3 +161,19 @@ def slice_records_by_partial_ids(input_filename: str, output_filename: str, *inp
             SeqIO.write(record, output_handle, "fasta")
 
 
+def summarize_lengths(input_filename: str, output_filename: str) -> None:
+    """Summarize sequence lengths.
+
+    Args
+    ----
+    input_filename : str
+        Input filename.
+    output_filename : str
+        Output filename.
+
+    """
+    with open(input_filename, "r") as input_handle, open(output_filename, "w") as output_handle:
+        for record in SeqIO.parse(input_handle, "fasta"):
+            seq_name = record.id
+            seq_length = len(record.seq)
+            output_handle.write(f"{seq_name}\t{seq_length}\n")
