@@ -8,6 +8,7 @@ rename_header: Rename a header.
 prefix_to_sequence_ids: Prefix to sequence ids.
 split_multi_to_single: Split a multi FASTA file into individual single sequence FASTA files.
 merge_msa_by_ids: Merge MSAs by sequence ids.
+slice_records_by_ids: Slice records by sequence ids.
 slice_records_by_exact_ids: Slice records by exact match of sequence ids.
 slice_records_by_partial_ids: Slice records by partial match of sequence ids.
 measure_lengths: Measure sequence lengths.
@@ -116,6 +117,26 @@ def merge_msa_by_ids(input_filename: str, output_filename: str) -> None:
             record = SeqRecord(Seq(sequence), id=index, description="")
             records.append(record)
         SeqIO.write(records, output_handle, "fasta")
+
+
+def slice_records_by_ids(input_filename: str, output_filename: str, *input_ids: str) -> None:
+    """Slice records by sequence ids.
+
+    Args
+    ----
+    input_filename : str
+        Input filename.
+    output_filename : str
+        Output filename.
+    input_ids : tuple
+        Sequence ids to slice records.
+
+    """
+    with open(input_filename, "r") as input_handle, open(output_filename, "w") as output_handle:
+        for record in SeqIO.parse(input_handle, "fasta"):
+            if record.id not in input_ids:
+                continue
+            SeqIO.write(record, output_handle, "fasta")
 
 
 def slice_records_by_exact_ids(input_filename: str, output_filename: str, *input_ids: str) -> None:
