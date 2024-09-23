@@ -5,6 +5,7 @@
 Functions
 ---------
 rename_header: Rename a header.
+assign_unique_ids: Assign unique IDs to duplicate sequence ids.
 prefix_to_sequence_ids: Prefix to sequence ids.
 split_multi_to_single: Split a multi FASTA file into individual single sequence FASTA files.
 merge_msa_by_ids: Merge MSAs by sequence ids.
@@ -41,6 +42,34 @@ def rename_header(input_filename: str, output_filename: str, output_id: str, out
         record.description = output_description
     with open(output_filename, mode="w") as output_handle:
         SeqIO.write(record, output_handle, "fasta")
+
+
+def assign_unique_ids(input_filename: str, output_filename: str) -> None:
+    """Assign unique IDs to duplicate sequence ids.
+    
+    Args
+    ----
+    input_filename : str
+        Input filename.
+    output_filename : str
+        Output filename.
+    
+    """
+    counts = {}
+
+    with open(input_filename, "r") as input_handle, open(output_filename, "w") as output_handle:
+        for record in SeqIO.parse(input_handle, "fasta"):
+            count = counts.get(record.id, 0)
+            counts[record.id] = count + 1
+            ## unique ID
+            if count == 0:
+                unique_id = record.id
+            else:
+                unique_id = f"{record.id}-{count}"
+
+            record.id = unique_id
+            record.description = ""
+            SeqIO.write(record, output_handle, "fasta")
 
 
 def prefix_to_sequence_ids(input_filename: str, output_filename: str, prefix: str) -> None:
