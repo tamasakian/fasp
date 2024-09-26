@@ -9,6 +9,8 @@ slice_records_by_seqids: Slice records by match of seqids.
 slice_sequence_by_flanking_region: Slice a sequence with the flanking region and display start and stop codons.
 slice_sequence_by_upstream_region: Slice a sequence with the upstream region and display start codon.
 slice_sequence_by_downstream_region: Slice a sequence with the downstream region and display stop codon.
+generate_introns: Generate introns for genes.
+generate_upstream_regions: Generate upstream sequences for genes.
 
 """
 
@@ -301,3 +303,45 @@ def generate_introns(input_filename: str, output_filename: str, gff_filename: st
                 if strand == "-":
                     intron_seq = intron_seq.reverse_complement()
                 output_handle.write(f">{intron_id}\n{intron_seq}\n")
+
+
+def generate_upstream_regions(input_filename: str, output_filename: str, gff_filename: str) -> None:
+    """Generate upstream sequences for genes.
+
+    Args
+    ----
+    input_filename : str
+        Input FASTA filename.
+    output_filename : str
+        Output FASTA filename.
+    gff_filename : str
+        Generated upstream GFF filename.
+
+    """
+    upstreams = []
+    with open(gff_filename, "r") as gff_handle:
+        for line in gff_handle:
+            if line.startswith("#"):
+                continue
+            li = line.strip().split("\t")
+            if len(li) != 9:
+                continue
+            seqid, src, kind, start, end, score, strand, phase, attributes = li
+            if kind == "upstream":
+                attr_dict = {}
+                for attr in attributes.split(";"):
+                    key, value = attr.split("=")
+                    attr_dict[key] = value
+                protein_id = attr_dict.get("upstream_id")
+                upstreams.append((seqid, int(start), int(end), strand, upstream_id))
+    
+    genome = SeqIO.to_dict(SeqIO.parse(input_filename, "fasta"))
+
+    with open(output_filename, "w") as output_handle:
+        for upstream in upstreams:
+            seqid, start, end, strand, upstream_id = upstream
+            if seqid in genome:
+                upstream_seq = genome[seqid].seq[start-1:end]
+                if strand == "-":
+                    upstream_seq = upstream_seq.reverse_complement()
+                output_handle.write(f">{upstream_id}\n{upstream_seq}\n")
