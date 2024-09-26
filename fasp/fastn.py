@@ -16,6 +16,7 @@ generate_upstream_regions: Generate upstream sequences for genes.
 
 import re
 from Bio import SeqIO
+from Bio.Seq import Seq
 from Bio.SeqRecord import SeqRecord
 
 def rename_headers_feature(input_filename: str, output_filename: str, feature: str) -> None:
@@ -302,6 +303,8 @@ def generate_introns(input_filename: str, output_filename: str, gff_filename: st
                 intron_seq = genome[seqid].seq[start-1:end]
                 if strand == "-":
                     intron_seq = intron_seq.reverse_complement()
+                intron_seq = str(intron_seq)
+                intron_seq = "\n".join([intron_seq[i:i + 80] for i in range(0, len(intron_seq), 80)])
                 output_handle.write(f">{intron_id}\n{intron_seq}\n")
 
 
@@ -332,7 +335,7 @@ def generate_upstream_regions(input_filename: str, output_filename: str, gff_fil
                 for attr in attributes.split(";"):
                     key, value = attr.split("=")
                     attr_dict[key] = value
-                protein_id = attr_dict.get("upstream_id")
+                upstream_id = attr_dict.get("upstream_id")
                 upstreams.append((seqid, int(start), int(end), strand, upstream_id))
     
     genome = SeqIO.to_dict(SeqIO.parse(input_filename, "fasta"))
@@ -344,4 +347,6 @@ def generate_upstream_regions(input_filename: str, output_filename: str, gff_fil
                 upstream_seq = genome[seqid].seq[start-1:end]
                 if strand == "-":
                     upstream_seq = upstream_seq.reverse_complement()
+                upstream_seq = str(upstream_seq)
+                upstream_seq = "\n".join([upstream_seq[i:i + 80] for i in range(0, len(upstream_seq), 80)])
                 output_handle.write(f">{upstream_id}\n{upstream_seq}\n")
