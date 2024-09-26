@@ -11,6 +11,7 @@ slice_sequence_by_upstream_region: Slice a sequence with the upstream region and
 slice_sequence_by_downstream_region: Slice a sequence with the downstream region and display stop codon.
 generate_introns: Generate introns for genes.
 generate_upstream_regions: Generate upstream sequences for genes.
+generate_downstream_regions: Generate downstream sequences for genes.
 
 """
 
@@ -350,3 +351,47 @@ def generate_upstream_regions(input_filename: str, output_filename: str, gff_fil
                 upstream_seq = str(upstream_seq)
                 upstream_seq = "\n".join([upstream_seq[i:i + 80] for i in range(0, len(upstream_seq), 80)])
                 output_handle.write(f">{upstream_id}\n{upstream_seq}\n")
+
+
+def generate_downstream_regions(input_filename: str, output_filename: str, gff_filename: str) -> None:
+    """Generate downstream sequences for genes.
+
+    Args
+    ----
+    input_filename : str
+        Input FASTA filename.
+    output_filename : str
+        Output FASTA filename.
+    gff_filename : str
+        Generated downstream GFF filename.
+
+    """
+    downstreams = []
+    with open(gff_filename, "r") as gff_handle:
+        for line in gff_handle:
+            if line.startswith("#"):
+                continue
+            li = line.strip().split("\t")
+            if len(li) != 9:
+                continue
+            seqid, src, kind, start, end, score, strand, phase, attributes = li
+            if kind == "downstream":
+                attr_dict = {}
+                for attr in attributes.split(";"):
+                    key, value = attr.split("=")
+                    attr_dict[key] = value
+                downstream_id = attr_dict.get("downstream_id")
+                downstreams.append((seqid, int(start), int(end), strand, downstream_id))
+    
+    genome = SeqIO.to_dict(SeqIO.parse(input_filename, "fasta"))
+
+    with open(output_filename, "w") as output_handle:
+        for downstream in downstream_id:
+            seqid, start, end, strand, downstream_id = downstream
+            if seqid in genome:
+                downstream_seq = genome[seqid].seq[start-1:end]
+                if strand == "-":
+                    downstream_seq = downstream_seq.reverse_complement()
+                downstream_seq = str(downstream_seq)
+                downstream_seq = "\n".join([downstream_seq[i:i + 80] for i in range(0, len(downstream_seq), 80)])
+                output_handle.write(f">{downstream_id}\n{downstream_seq}\n")
