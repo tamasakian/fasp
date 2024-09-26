@@ -386,7 +386,7 @@ def generate_downstream_regions(input_filename: str, output_filename: str, gff_f
     genome = SeqIO.to_dict(SeqIO.parse(input_filename, "fasta"))
 
     with open(output_filename, "w") as output_handle:
-        for downstream in downstream_id:
+        for downstream in downstreams:
             seqid, start, end, strand, downstream_id = downstream
             if seqid in genome:
                 downstream_seq = genome[seqid].seq[start-1:end]
