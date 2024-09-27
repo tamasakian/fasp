@@ -203,7 +203,7 @@ def slice_records_by_partial_ids(input_filename: str, output_filename: str, *inp
         Sequence ids to slice records.
 
     """
-    pattern = "|".join(r"\b" + re.escape(input_id) + r"\b" for input_id in input_ids)
+    pattern = "|".join(re.escape(input_id) for input_id in input_ids)
 
     with open(input_filename, "r") as input_handle, open(output_filename, "w") as output_handle:
         for record in SeqIO.parse(input_handle, "fasta"):
