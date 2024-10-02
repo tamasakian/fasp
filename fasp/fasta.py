@@ -10,6 +10,7 @@ prefix_to_sequence_ids: Prefix to sequence ids.
 split_multi_to_single: Split a multi FASTA file into individual single sequence FASTA files.
 merge_msa_by_ids: Merge MSAs by sequence ids.
 slice_records_by_ids: Slice records by sequence ids.
+slice_records_by_idfile: Slice records by a textfile with sequence ids.
 slice_records_by_exact_ids: Slice records by exact match of sequence ids.
 slice_records_by_partial_ids: Slice records by partial match of sequence ids.
 measure_lengths: Measure sequence lengths.
@@ -161,6 +162,32 @@ def slice_records_by_ids(input_filename: str, output_filename: str, *input_ids: 
         Sequence ids to slice records.
 
     """
+    with open(input_filename, "r") as input_handle, open(output_filename, "w") as output_handle:
+        for record in SeqIO.parse(input_handle, "fasta"):
+            if record.id not in input_ids:
+                continue
+            SeqIO.write(record, output_handle, "fasta")
+
+
+def slice_records_by_idfile(input_filename: str, output_filename: str, input_idfile: str) -> None:
+    """Slice records by a textfile with sequence ids.
+
+    Args
+    ----
+    input_filename : str
+        Input filename.
+    output_filename : str
+        Output filename.
+    input_idfile : tuple
+        Textfile with sequence ids to slice records.
+
+    """
+    input_ids = []
+    with open(input_idfile, "r") as input_handle:
+        for line in input_handle:
+            input_id = line.strip()
+            input_ids.append(input_id)
+
     with open(input_filename, "r") as input_handle, open(output_filename, "w") as output_handle:
         for record in SeqIO.parse(input_handle, "fasta"):
             if record.id not in input_ids:
