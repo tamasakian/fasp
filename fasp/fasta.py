@@ -185,8 +185,9 @@ def slice_records_by_idfile(input_filename: str, output_filename: str, input_idf
     input_ids = []
     with open(input_idfile, "r") as input_handle:
         for line in input_handle:
-            input_id = line.strip()
-            input_ids.append(input_id)
+            li = line.strip().split()
+            for input_id in li:
+                input_ids.append(input_id)
 
     with open(input_filename, "r") as input_handle, open(output_filename, "w") as output_handle:
         for record in SeqIO.parse(input_handle, "fasta"):
