@@ -107,7 +107,6 @@ def exclude_isoforms_by_length(input_filename: str, output_filename: str, gff3_f
                 else:
                     protein_lengths[protein_id] += length
             ## Select the longest protein.
-            print(f"Gene: {gene}, CDS List: {cds_list}, Protein Lengths: {protein_lengths}")
             longest_proteins[gene] = max(protein_lengths, key=protein_lengths.get)
 
         return longest_proteins
