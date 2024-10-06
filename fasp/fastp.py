@@ -67,7 +67,7 @@ def exclude_isoforms_by_length(input_filename: str, output_filename: str, gff3_f
                     continue
 
                 ## Exclude CDS without locus_tag and gene.
-                if "locus_tag" not in attr_dict or "gene" not in attr_dict:
+                if "locus_tag" not in attr_dict and "gene" not in attr_dict:
                     continue
 
                 ## Read information of CDS.
@@ -106,6 +106,7 @@ def exclude_isoforms_by_length(input_filename: str, output_filename: str, gff3_f
                 else:
                     protein_lengths[protein_id] += length
             ## Select the longest protein.
+            print(f"Gene: {gene}, CDS List: {cds_list}, Protein Lengths: {protein_lengths}")
             longest_proteins[gene] = max(protein_lengths, key=protein_lengths.get)
 
         return longest_proteins
