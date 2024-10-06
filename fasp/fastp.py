@@ -150,7 +150,7 @@ def exclude_non_nuclear_proteins(input_filename: str, output_filename: str) -> N
         Output protein FASTA filename.
 
     """
-    with open(input_filename, mode="fasta") as input_handle, open(output_filename, "w") as output_handle:
+    with open(input_filename, mode="r") as input_handle, open(output_filename, "w") as output_handle:
         for protein in SeqIO.parse(input_handle, "fasta"):
             description = protein.description.lower()
             ## Exclude mitochondrion and chloroplast.
