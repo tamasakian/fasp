@@ -40,7 +40,8 @@ functions = {
     "slice_sequence_by_downstream_region": fastn.slice_sequence_by_downstream_region,
     "generate_introns": fastn.generate_introns,
     "generate_upstream_regions": fastn.generate_upstream_regions, 
-    "generate_downstream_regions": fastn.generate_downstream_regions
+    "generate_downstream_regions": fastn.generate_downstream_regions,
+    "exclude_isoforms_by_length": fastp.exclude_isoforms_by_length
 }
 
 if __name__ == "__main__":
