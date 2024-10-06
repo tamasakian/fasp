@@ -1,7 +1,5 @@
 #!/usr/bin/env python3
 
-from Bio import SeqIO
-
 """Library for processing protein FASTA files.
 
 Functions
@@ -9,6 +7,8 @@ Functions
 exclude_isoforms_by_length: Exclude isoforms based on length.
 
 """
+
+from Bio import SeqIO
 
 def exclude_isoforms_by_length(input_filename: str, output_filename: str, gff3_file: str) -> None:
     """Exclude isoforms based on length.
