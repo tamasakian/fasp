@@ -8,6 +8,11 @@ FASP: A FASTA Processor
 pip3 install git+https://github.com/tamasakian/fasp.git
 ```
 
+If you want to install in editable mode;
+```
+pip3 install -e git+https://github.com/tamasakian/fasp.git#egg=fasp
+```
+
 ## Usage
 
 ```
