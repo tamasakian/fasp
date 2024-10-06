@@ -41,7 +41,8 @@ functions = {
     "generate_introns": fastn.generate_introns,
     "generate_upstream_regions": fastn.generate_upstream_regions, 
     "generate_downstream_regions": fastn.generate_downstream_regions,
-    "exclude_isoforms_by_length": fastp.exclude_isoforms_by_length
+    "exclude_isoforms_by_length": fastp.exclude_isoforms_by_length, 
+    "exclude_non_nuclear_proteins": fastp.exclude_non_nuclear_proteins
 }
 
 if __name__ == "__main__":

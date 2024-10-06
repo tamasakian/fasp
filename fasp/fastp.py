@@ -5,6 +5,7 @@
 Functions
 ---------
 exclude_isoforms_by_length: Exclude isoforms based on length.
+exclude_non_nuclear_proteins: Exclude mitochondrial and chloroplast proteins.
 
 """
 
@@ -136,3 +137,22 @@ def exclude_isoforms_by_length(input_filename: str, output_filename: str, gff3_f
     genes = parse_gff3(gff3_file)
     longest_proteins = select_longest_protein(genes)
     slice_proteins(input_filename, output_filename, longest_proteins)
+
+
+def exclude_non_nuclear_proteins(input_filename: str, output_filename: str) -> None:
+    """Exclude mitochondrial and chloroplast proteins from the protein sequences.
+    
+    Args
+    ----
+    input_filename : str
+        Input protein FASTA filename.
+    output_filename : str
+        Output protein FASTA filename.
+
+    """
+    with open(output_filename, "w") as output_handle:
+        for protein in SeqIO.parse(input_filename, "fasta"):
+            description = protein.description.lower()
+            if "(mitochondrion)" in description and "(chloroplast)" in description:
+                SeqIO.write(protein, output_handle, "fasta")
+
