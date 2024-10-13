@@ -13,6 +13,7 @@ slice_records_by_ids: Slice records by sequence ids.
 slice_records_by_idfile: Slice records by a textfile with sequence ids.
 slice_records_by_exact_ids: Slice records by exact match of sequence ids.
 slice_records_by_partial_ids: Slice records by partial match of sequence ids.
+slice_records_by_keyword: Slice records by keyword.
 measure_lengths: Measure sequence lengths.
 
 """
@@ -236,6 +237,27 @@ def slice_records_by_partial_ids(input_filename: str, output_filename: str, *inp
     with open(input_filename, "r") as input_handle, open(output_filename, "w") as output_handle:
         for record in SeqIO.parse(input_handle, "fasta"):
             if not re.search(pattern, record.id):
+                continue
+            SeqIO.write(record, output_handle, "fasta")
+
+
+def slice_records_by_keyword(input_filename: str, output_filename: str, input_keyword: str) -> None:
+    """Slice records by keywords.
+
+    Args
+    ----
+    input_filename : str
+        Input filename.
+    output_filename : str
+        Output filename.
+    input_keyword : str
+        Keyword to slice records.
+
+    """
+
+    with open(input_filename, "r") as input_handle, open(output_filename, "w") as output_handle:
+        for record in SeqIO.parse(input_handle, "fasta"):
+            if not re.search(input_keyword, record.id) and not re.search(input_keyword, record.description):
                 continue
             SeqIO.write(record, output_handle, "fasta")
 

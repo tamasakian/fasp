@@ -32,6 +32,7 @@ functions = {
     "slice_records_by_idfile": fasta.slice_records_by_idfile, 
     "slice_records_by_exact_ids": fasta.slice_records_by_exact_ids, 
     "slice_records_by_partial_ids": fasta.slice_records_by_partial_ids, 
+    "slice_records_by_keyword": fasta.slice_records_by_keyword, 
     "measure_lengths": fasta.measure_lengths, 
     "rename_headers_feature": fastn.rename_headers_feature, 
     "slice_records_by_seqids": fastn.slice_records_by_seqids, 
