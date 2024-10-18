@@ -14,6 +14,7 @@ slice_records_by_idfile: Slice records by a textfile with sequence ids.
 slice_records_by_exact_ids: Slice records by exact match of sequence ids.
 slice_records_by_partial_ids: Slice records by partial match of sequence ids.
 slice_records_by_keyword: Slice records by keyword.
+sort_records_by_sequence_ids: Sort records by sequence ids.
 measure_lengths: Measure sequence lengths.
 
 """
@@ -260,6 +261,39 @@ def slice_records_by_keyword(input_filename: str, output_filename: str, input_ke
             if not re.search(input_keyword, record.id) and not re.search(input_keyword, record.description):
                 continue
             SeqIO.write(record, output_handle, "fasta")
+
+def sort_records_by_sequence_ids(input_filename: str, output_filename: str) -> None: 
+    """Sort records by sequence ids.
+
+    Args
+    ----
+    input_filename : str
+        Input filename.
+    output_filename : str
+        Output filename.
+
+    """
+    categorized_records = {}
+    pattern = re.compile(r"([A-Za-z-]+)(\d+)")
+    
+    with open(input_filename, "r") as input_handle:
+        for record in SeqIO.parse(input_handle, "fasta"):
+            match = pattern.match(record.id)
+            if match:
+                category = match.group(1)
+                index = int(match.group(2))
+            
+                if category not in categorized_records:
+                    categorized_records[category] = []
+                categorized_records[category].append((index, record))
+
+    for category in categorized_records:
+        categorized_records[category].sort()
+
+    with open(output_filename, "w") as output_handle:
+        for category in categorized_records:
+            for index, record in categorized_records[category]:
+                SeqIO.write(record, output_handle, "fasta")
 
 
 def measure_lengths(input_filename: str, output_filename: str) -> None:
