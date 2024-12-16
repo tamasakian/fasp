@@ -340,7 +340,7 @@ def seq_extractor(input_filename: str, output_filename: str, seq_filename: str) 
 
     seq_list = []
     for record in SeqIO.parse(input_filename, "fasta"):
-        if record.id in seq_list:
+        if record.id in seq_names:
             seq_list.append(record)
 
     with open(output_filename, "w") as output_handle:
