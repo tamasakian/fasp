@@ -16,6 +16,7 @@ slice_records_by_partial_ids: Slice records by partial match of sequence ids.
 slice_records_by_keyword: Slice records by keyword.
 sort_records_by_sequence_ids: Sort records by sequence ids.
 measure_lengths: Measure sequence lengths.
+seq_extractor: Extract sequences from a FASTA file based on sequence IDs listed in a text file.
 
 """
 
@@ -180,7 +181,7 @@ def slice_records_by_idfile(input_filename: str, output_filename: str, input_idf
         Input filename.
     output_filename : str
         Output filename.
-    input_idfile : tuple
+    input_idfile : str
         Textfile with sequence ids to slice records.
 
     """
@@ -313,3 +314,38 @@ def measure_lengths(input_filename: str, output_filename: str) -> None:
             name = record.id
             length = len(record.seq)
             output_handle.write(f"{name}\t{length}\n")
+
+
+def seq_extractor(input_filename: str, output_filename: str, seq_filename: str) -> None:
+    """
+    Extract sequences from a FASTA file based on sequence IDs listed in a text file.
+
+    Args
+    ----
+    input_filename : str
+        Path to the input FASTA file.
+
+    output_filename : str
+        Path to save the extracted sequences in FASTA format.
+
+    seq_filename : str 
+        Path to the text file containing sequence IDs (one per line).
+        
+    """
+    seq_names = []
+    with open(seq_filename, "r") as seq_handle:
+        for line in seq_handle:
+            li = line.strip().split()
+            for seq_name in li:
+                seq_names.append(seq_name)
+
+    seq_list = []
+    for record in SeqIO.parse(input_filename, "fasta"):
+        if record.id in seq_list:
+            seq_list.append(record)
+
+    with open(output_filename, "w") as output_handle:
+        SeqIO.write(seq_list, output_handle, "fasta")
+
+    print(f"Extracted {len(seq_list)} sequences to {output_filename}.")
+

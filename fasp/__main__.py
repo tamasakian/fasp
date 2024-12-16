@@ -35,6 +35,7 @@ functions = {
     "slice_records_by_keyword": fasta.slice_records_by_keyword, 
     "sort_records_by_sequence_ids": fasta.sort_records_by_sequence_ids,
     "measure_lengths": fasta.measure_lengths, 
+    "seq_extractor": fasta.seq_extractor, 
     "rename_headers_feature": fastn.rename_headers_feature, 
     "slice_records_by_seqids": fastn.slice_records_by_seqids, 
     "slice_sequence_by_flanking_region": fastn.slice_sequence_by_flanking_region,
