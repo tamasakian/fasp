@@ -335,9 +335,8 @@ def seq_extractor(input_filename: str, output_filename: str, seq_filename: str) 
     seq_names = []
     with open(seq_filename, "r") as seq_handle:
         for line in seq_handle:
-            li = line.strip().split()
-            for seq_name in li:
-                seq_names.append(seq_name)
+            seq_name = line.strip()
+            seq_names.append(seq_name)
 
     seq_list = []
     for record in SeqIO.parse(input_filename, "fasta"):
