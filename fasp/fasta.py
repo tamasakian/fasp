@@ -17,6 +17,7 @@ slice_records_by_keyword: Slice records by keyword.
 sort_records_by_sequence_ids: Sort records by sequence ids.
 measure_lengths: Measure sequence lengths.
 seq_extractor: Extract sequences from a FASTA file based on sequence IDs listed in a text file.
+name_cleaner: Remove descriptions from sequences in a FASTA file.
 
 """
 
@@ -346,5 +347,27 @@ def seq_extractor(input_filename: str, output_filename: str, seq_filename: str) 
     with open(output_filename, "w") as output_handle:
         SeqIO.write(seq_list, output_handle, "fasta")
 
-    print(f"Extracted {len(seq_list)} sequences to {output_filename}.")
+    print(f"extracted {len(seq_list)} sequences and saved to {output_filename}.")
+
+def name_cleaner(input_filename: str, output_filename: str) -> None:
+    """
+    Remove descriptions from sequences in a FASTA file.
+    
+    Args
+    ----
+    input_filename : str
+        Path to the input FASTA file.
+
+    output_filename : str
+        Path to save the FASTA file with descriptions removed.
+    """
+    rec_list = []
+    for record in SeqIO.parse(input_filename, "fasta"):
+        record.description = ""
+        rec_list.append(record)
+
+    with open(output_filename, "w") as output_handle:
+        SeqIO.write(rec_list, output_handle, "fasta")
+
+    print(f"removed descriptions from {len(rec_list)} sequences and saved to {output_filename}.")
 
