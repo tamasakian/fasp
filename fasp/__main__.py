@@ -46,7 +46,8 @@ functions = {
     "generate_upstream_regions": fastn.generate_upstream_regions, 
     "generate_downstream_regions": fastn.generate_downstream_regions,
     "exclude_isoforms_by_length": fastp.exclude_isoforms_by_length, 
-    "exclude_non_nuclear_proteins": fastp.exclude_non_nuclear_proteins
+    "exclude_non_nuclear_proteins": fastp.exclude_non_nuclear_proteins, 
+    "og_prefixer": fastp.og_prefixer
 }
 
 if __name__ == "__main__":

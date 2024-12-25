@@ -4,11 +4,13 @@
 
 Functions
 ---------
-exclude_isoforms_by_length: Exclude isoforms based on length.
-exclude_non_nuclear_proteins: Exclude mitochondrial and chloroplast proteins.
+exclude_isoforms_by_length: Exclude isoforms based on length. 
+exclude_non_nuclear_proteins: Exclude mitochondrial and chloroplast proteins. 
+og_prefixer: Add ortholog group (OG) prefixes to the sequence IDs based on the OG table by SonicParanoid2. 
 
 """
 
+from collections import defaultdict
 from Bio import SeqIO
 
 def exclude_isoforms_by_length(input_filename: str, output_filename: str, gff3_file: str) -> None:
@@ -156,4 +158,55 @@ def exclude_non_nuclear_proteins(input_filename: str, output_filename: str) -> N
             if "(mitochondrion)" in description or "(chloroplast)" in description:
                 continue
             SeqIO.write(protein, output_handle, "fasta")
+
+def og_prefixer(input_filename: str, output_filename: str, og_filename: str) -> None:
+    """
+    Add ortholog group (OG) prefixes to the sequence IDs in a FASTA file based on the OG table by SonicPranoid2.
+
+    Args
+    ----
+    input_filename : str
+        Path to the input FASTA file. 
+        This file should contain sequences with IDs that represent Protein IDs.
+
+    output_filename : str
+        Path to the output FASTA file where the updated sequences with OG-prefixed IDs will be saved. 
+
+    og_filename : str
+        Path to the OG table file in tab-delimited format.
+        The table should include columns with gene IDs (starting from column 5) and OG names.
+
+    """
+
+    og_dict = defaultdict(set)
+
+    with open(og_filename, "r") as og_handle:
+        for line in og_handle:
+            line = line.strip()
+            if not line:
+                continue
+            li = line.split("\t")
+            og_name = f"OG{li[0]}"
+
+            for og_members in li[4:]:
+                gene_list = og_members.split(",")
+                og_dict[og_name].update(gene_list)
+    
+    seq_list = list(SeqIO.parse(input_filename, "fasta"))
+
+    for seq in seq_list:
+        seq_name = seq.id
+        new_name = seq_name
+
+        for og_name, genes in og_dict.items():
+            if any(gene in seq_name for gene in genes):
+                new_name = f"{og_name}_{seq_name}"
+                break
+
+        seq.id = new_name
+        seq.description = ""
+
+    SeqIO.write(seq_list, output_filename, "fasta")
+    print(f"updated sequences written to {output_filename}.")
+
 

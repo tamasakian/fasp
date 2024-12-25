@@ -16,8 +16,8 @@ slice_records_by_partial_ids: Slice records by partial match of sequence ids.
 slice_records_by_keyword: Slice records by keyword.
 sort_records_by_sequence_ids: Sort records by sequence ids.
 measure_lengths: Measure sequence lengths.
-seq_extractor: Extract sequences from a FASTA file based on sequence IDs listed in a text file.
-name_cleaner: Remove descriptions from sequences in a FASTA file.
+seq_extractor: Extract sequences from a FASTA file based on sequence IDs listed in a text file. 
+name_cleaner: Remove descriptions from sequences in a FASTA file. 
 
 """
 
