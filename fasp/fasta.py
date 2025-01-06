@@ -39,7 +39,7 @@ def rename_header(input_filename: str, output_filename: str, output_id: str, out
         Sequence id.
     output_description : str
         Sequence description.
-    
+
     """
     with open(input_filename, mode="r") as input_handle:
         record = SeqIO.read(input_handle, "fasta")
@@ -51,14 +51,14 @@ def rename_header(input_filename: str, output_filename: str, output_id: str, out
 
 def assign_unique_ids(input_filename: str, output_filename: str) -> None:
     """Assign unique IDs to duplicate sequence ids.
-    
+
     Args
     ----
     input_filename : str
         Input filename.
     output_filename : str
         Output filename.
-    
+
     """
     counts = {}
 
@@ -101,10 +101,10 @@ def prefix_to_sequence_ids(input_filename: str, output_filename: str, prefix: st
 def split_multi_to_single(input_filename: str, output_dirname: str) -> None:
     """Split a multi FASTA file into individual single sequence FASTA files.
 
-    This function reads a multi-FASTA file and creates a separate FASTA file 
-    for each sequence in the input file. 
-    
-    The output files are named based on the sequence IDs and 
+    This function reads a multi-FASTA file and creates a separate FASTA file
+    for each sequence in the input file.
+
+    The output files are named based on the sequence IDs and
     saved in the specified output directory.
 
     Args
@@ -125,8 +125,8 @@ def merge_msa_by_ids(input_filename: str, output_filename: str) -> None:
     """Merge MSAs by sequence ids.
 
     This function reads a multi-FASTA file and concatenates sequences 
-    with the same sequence id. 
-    
+    with the same sequence id.
+
     The merged sequences are then saved to a new FASTA file.
 
     Args
@@ -134,7 +134,7 @@ def merge_msa_by_ids(input_filename: str, output_filename: str) -> None:
     input_filename : str
         Input filename.
     output_filename : str
-       Output filename where the merged sequences will be saved.
+        Output filename where the merged sequences will be saved.
 
     """
     msa = {}
@@ -277,14 +277,14 @@ def sort_records_by_sequence_ids(input_filename: str, output_filename: str) -> N
     """
     categorized_records = {}
     pattern = re.compile(r"([A-Za-z-]+)(\d+)")
-    
+
     with open(input_filename, "r") as input_handle:
         for record in SeqIO.parse(input_handle, "fasta"):
             match = pattern.match(record.id)
             if match:
                 category = match.group(1)
                 index = int(match.group(2))
-            
+
                 if category not in categorized_records:
                     categorized_records[category] = []
                 categorized_records[category].append((index, record))
@@ -329,9 +329,9 @@ def seq_extractor(input_filename: str, output_filename: str, seq_filename: str) 
     output_filename : str
         Path to save the extracted sequences in FASTA format.
 
-    seq_filename : str 
+    seq_filename : str
         Path to the text file containing sequence IDs (one per line).
-        
+
     """
     seq_names = []
     with open(seq_filename, "r") as seq_handle:
@@ -352,7 +352,7 @@ def seq_extractor(input_filename: str, output_filename: str, seq_filename: str) 
 def name_cleaner(input_filename: str, output_filename: str) -> None:
     """
     Remove descriptions from sequences in a FASTA file.
-    
+
     Args
     ----
     input_filename : str
