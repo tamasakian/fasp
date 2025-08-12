@@ -209,4 +209,40 @@ def og_prefixer(input_filename: str, output_filename: str, og_filename: str) -> 
     SeqIO.write(seq_list, output_filename, "fasta")
     print(f"updated sequences written to {output_filename}.")
 
+def extract_protein_hmmsearch(input_file: str, output_file: str, hmm_file) -> None:
+    """
+    Extract protein sequences from a FASTA file based on a HMM search result.
+
+    Args
+    ----
+    input_file : str
+        Path to the input FASTA file containing protein sequences.
+    output_file : str
+        Path to the output FASTA file where the extracted protein sequences will be saved.
+    hmm_file : str
+        Path to the HMM search result file.
+        This file should contain protein names in the second column, which will be used to filter the sequences.
+    """
+    protein_set = set()
+
+    with open(hmm_file, mode="r") as hmm_handle:
+        for line in hmm_handle:
+            if line.startswith("#") or not line.strip():
+                continue
+            li = line.strip().split()
+            if len(li) < 14:
+                continue
+            protein_name = li[1]
+            protein_set.add(protein_name)
+
+    # === Sort protein names and write to output file ===
+    protein_set = sorted(protein_set)
+    protein_list = []
+    for record in SeqIO.parse(input_file, "fasta"):
+        if record.id in protein_set:
+            protein_list.append(record)
+
+    with open(output_file, "w") as output_handle:
+        SeqIO.write(protein_list, output_handle, "fasta")
+
 
