@@ -232,7 +232,7 @@ def extract_protein_hmmsearch(input_file: str, output_file: str, hmm_file) -> No
             li = line.strip().split()
             if len(li) < 14:
                 continue
-            protein_name = li[1]
+            protein_name = li[0]
             protein_set.add(protein_name)
 
     # === Sort protein names and write to output file ===
