@@ -386,8 +386,14 @@ def slice_tail(input_fasta: str, output_fasta: str, N: int) -> None:
     N : int
         Number of characters to slice from the end of each sequence.
     """
-    if not isinstance(N, int) or N <= 0:
+    try:
+        N = int(N)
+    except ValueError:
         raise ValueError("[ERROR] Argument N must be a positive integer.")
+
+    if N <= 0:
+        raise ValueError("[ERROR] Argument N must be a positive integer.")
+
     out_records = []
     for rec in SeqIO.parse(input_fasta, format="fasta"):
         seq = str(rec.seq)
