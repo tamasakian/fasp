@@ -30,7 +30,7 @@ def rename_headers_feature(input_filename: str, output_filename: str, feature: s
     output_filename : str
         Output filename.
     feature : str
-        Feature to rename headers. 
+        Feature to rename headers.
         e.g., locus_tag, protein_id.
 
     """
