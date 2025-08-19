@@ -13,22 +13,18 @@ If you want to install in editable mode;
 pip3 install -e git+https://github.com/tamasakian/fasp.git#egg=fasp
 ```
 
-## Usage
+## Syntax
 
 ```
 python3 -m fasp <function> <args>
 ```
 
-For example, you want to extract upstream region;
+## Functions
+`slice_tail`: Slice the tail of a FASTA record.
 
 ```
-python3 -m fasp slice_sequence_by_upstream_region \
-    input_filename \
-    output_filename \
-    output_id \
-    output_description \
-    strand \
-    start \
-    end \
-    bp
+python3 -m fasp slice_tail <input_fasta> <output_fasta> <length>
 ```
+- `input_fasta`: Input FASTA file.
+- `output_fasta`: Output FASTA file.
+- `length`: Length of the tail to slice.
