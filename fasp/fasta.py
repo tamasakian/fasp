@@ -371,3 +371,37 @@ def name_cleaner(input_filename: str, output_filename: str) -> None:
 
     print(f"removed descriptions from {len(rec_list)} sequences and saved to {output_filename}.")
 
+def slice_tail(input_fasta: str, output_fasta: str, N: int) -> None:
+    """
+    Slice the last N characters from each sequence in a FASTA file.
+
+    Args
+    ----
+    input_fasta : str
+        Path to the input FASTA file.
+
+    output_fasta : str
+        Path to save the modified FASTA file.
+
+    N : int
+        Number of characters to slice from the end of each sequence.
+    """
+    if not isinstance(N, int) or N <= 0:
+        raise ValueError("[ERROR] Argument N must be a positive integer.")
+    out_records = []
+    for rec in SeqIO.parse(input_fasta, format="fasta"):
+        seq = str(rec.seq)
+        if len(seq) > N:
+            seq_tail = seq[-N:]
+            new_rec = SeqRecord(
+                seq=Seq(seq_tail),
+                id=rec.id,
+                description=rec.description)
+        else:
+            new_rec = SeqRecord(
+                seq=Seq(seq),
+                id=rec.id,
+                description=rec.description)
+        out_records.append(new_rec)
+    with open(output_fasta, mode="w") as output_handle:
+        SeqIO.write(out_records, output_handle, "fasta")
